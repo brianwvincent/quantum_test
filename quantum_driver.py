@@ -1,9 +1,12 @@
 
 
+def main():
 
-from google.cloud import bigquery
+    pass
 
-# bigquery Client construction
-client = bigquery.Client()
+
+
+if __name__== '__main__':
+    main()
 
 
