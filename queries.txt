@@ -1,0 +1,52 @@
+SESSION QUERIES:
+
+declare date_start date default "2020-03-02"; 
+declare date_end date default "2020-09-02" ; 
+
+SELECT session.id as sess_id, session.conn_rtt as rtt_ms, session.engaged, 
+session.conversion_value as conv_val, session.conversion_count as conv_cnt, IEEE_DIVIDE(session.conversion_value, session.conversion_count) AS conv_rate,
+EXTRACT(HOUR FROM TIMESTAMP_SECONDS(session.ts)) as start_hour,
+session.user.id as user, session.user.loyalty as loyalty, session.user.loyalty>1 as loyal,
+session.locale.country_iso_code, session.locale.lat as lat, session.locale.lng as long,
+session.device.name as device_name, session.device.name_id as device_id, session.device.browser_name as browser, session.device.browser_id as browser_id, session.os.name as os_name, session.os.id as os_id,
+session.referrer.category as refer_catg, session.referrer.category_id as refer_catg_id, session.referrer.sub_category as refer_subCatg, session.referrer.sub_category_id as refer_subCatg_id,
+
+(SELECT COUNT(*) FROM UNNEST(hits)) as pg_count,
+
+(SELECT COUNT(*) FROM 
+    UNNEST(hits) as hts
+    LEFT JOIN UNNEST(hts.events))  as sum_hit_evnts,
+
+FROM `qtm-qmdatest.qm.quinnmurray` as session
+
+WHERE DATE(PARTITIONTIME) between date_start and date_end
+
+
+PAGE QUERIES:
+
+
+declare date_start date default "2020-03-02"; 
+declare date_end date default "2020-09-02" ; 
+
+SELECT h.id as id, h.session_id as sess_id, h.attn_10, h.attn_20, h.attn_30, h.attn_40, h.attn_50, h.attn_60, h.attn_70, h.attn_80, h.attn_90, h.attn_100, h.clicks, h.engaged_seconds, h.max_scroll,
+h.url.id as url_id,
+h.referrer.category, h.referrer.category_id, h.referrer.url.domain, h.referrer.url.domain_id,
+(SELECT COUNT(*) FROM UNNEST(h.ajax)) as ajax_reqs,
+(SELECT COUNT(*) FROM UNNEST(h.events)) as num_events,
+(SELECT COUNT(*) FROM UNNEST(h.forms)) as num_forms,
+(SELECT AVG(forms.fill_time_s) from UNNEST(h.forms) as forms) as avg_form_fill_s,
+(SELECT AVG(clicks.time_to_click) from UNNEST(h.click) as clicks) as avg_time2click_ms,
+(SELECT COUNT(*) FROM UNNEST(h.click)) as num_clicks,
+session.conversion_count,session.conversion_value,
+
+FROM `qtm-qmdatest.qm.quinnmurray` as session, UNNEST(session.hits) as h
+
+WHERE DATE(PARTITIONTIME) between date_start and date_end limit 2400000
+
+
+
+
+
+
+
+
