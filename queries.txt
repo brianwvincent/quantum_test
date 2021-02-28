@@ -15,7 +15,19 @@ session.referrer.category as refer_catg, session.referrer.category_id as refer_c
 
 (SELECT COUNT(*) FROM 
     UNNEST(hits) as hts
-    LEFT JOIN UNNEST(hts.events))  as sum_hit_evnts,
+    LEFT JOIN UNNEST(hts.events))  as hit_evnt_cnt,
+
+(SELECT COUNT(*) FROM 
+    UNNEST(hits) as hts
+    LEFT JOIN UNNEST(hts.click))  as hit_click_cnt,
+
+(SELECT COUNT(*) FROM 
+    UNNEST(hits) as hts
+    LEFT JOIN UNNEST(hts.forms))  as hit_form_cnt,
+
+(SELECT COUNT(*) FROM 
+    UNNEST(hits) as hts
+    LEFT JOIN UNNEST(hts.ajax))  as hit_ajax_cnt,
 
 FROM `qtm-qmdatest.qm.quinnmurray` as session
 
@@ -36,8 +48,7 @@ h.referrer.category, h.referrer.category_id, h.referrer.url.domain, h.referrer.u
 (SELECT COUNT(*) FROM UNNEST(h.forms)) as num_forms,
 (SELECT AVG(forms.fill_time_s) from UNNEST(h.forms) as forms) as avg_form_fill_s,
 (SELECT AVG(clicks.time_to_click) from UNNEST(h.click) as clicks) as avg_time2click_ms,
-(SELECT COUNT(*) FROM UNNEST(h.click)) as num_clicks,
-session.conversion_count,session.conversion_value,
+session.conversion_count,session.conversion_value, IEEE_DIVIDE(session.conversion_value, session.conversion_count) AS conv_rate,
 
 FROM `qtm-qmdatest.qm.quinnmurray` as session, UNNEST(session.hits) as h
 

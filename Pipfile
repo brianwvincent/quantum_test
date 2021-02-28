@@ -8,6 +8,9 @@ google-cloud-bigquery = "*"
 pandas = "*"
 jupyter = "*"
 ipykernel = "*"
+seaborn = "*"
+dask = {extras = ["complete"], version = "*"}
+scikit-learn = "*"
 
 [dev-packages]
 

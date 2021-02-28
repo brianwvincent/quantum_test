@@ -1,18 +1,22 @@
 import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
 
 
 
-def initial_cleanup(df):
-
-    """performs initial data frame column cleaning
-        - user.data because its deprecated
-    """
-
-    # combine screen size into a single column
-    df["screen_size"] = df.apply(lambda x: (x.screen_width, x.screen_height), axis=1)
+def perform_one_hot_encoding(df, column_name):
     
-    # drop columns
-    df.drop(columns=['screen_width', 'screen_height'], inplace=True)
+    encoder = OneHotEncoder()
+    results = encoder.fit_transform(df[[column_name]].compute())
+    encoded_df = pd.DataFrame(results.toarray(), columns=encoder.categories_)
     
-    
-    return df
+    return df.join(encoded_df)
+
+def perform_many_hot_hot_encodings(df, column_names):
+
+    temp_df = df
+
+    for column_name in column_names:
+
+        temp_df = perform_one_hot_encoding(temp_df, column_name)
+
+    return temp_df
