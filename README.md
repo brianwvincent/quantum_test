@@ -50,3 +50,11 @@
     - ex) latency, num of ajax calls, data transferred, num of events
 - (stretch goal) Per-page anomalies?
 
+<br/><br/>
+
+# Conclusion
+
+## Future work
+- Currently, assumption under both Session and Page analyses is features are independent from Page Id - this would not be the case under future analysis
+
+
