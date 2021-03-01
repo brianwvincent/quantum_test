@@ -54,6 +54,9 @@
 
 # Conclusion
 
+## Questions
+- It appears the data, several of its features as well as the conversion rates, is largely bimodal - I'm therefore curious if this means there already exists anomalies in the data?
+
 ## Future work
 - Currently, assumption under both Session and Page analyses is features are independent from Page Id - this would not be the case under future analysis
 

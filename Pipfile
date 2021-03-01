@@ -12,6 +12,7 @@ scikit-learn = "*"
 jupyter = "*"
 ipykernel = "*"
 tensorflow = "*"
+imbalanced-learn = "*"
 
 [dev-packages]
 
