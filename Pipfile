@@ -6,13 +6,14 @@ name = "pypi"
 [packages]
 google-cloud-bigquery = "*"
 pandas = "*"
-jupyter = "*"
-ipykernel = "*"
 seaborn = "*"
 dask = {extras = ["complete"], version = "*"}
 scikit-learn = "*"
+jupyter = "*"
+ipykernel = "*"
+tensorflow = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.8"

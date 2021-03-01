@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 def perform_one_hot_encoding(df, column_name):
     
     encoder = OneHotEncoder()
-    results = encoder.fit_transform(df[[column_name]].compute())
+    results = encoder.fit_transform(df[[column_name]])
     encoded_df = pd.DataFrame(results.toarray(), columns=encoder.categories_)
     
     return df.join(encoded_df)
